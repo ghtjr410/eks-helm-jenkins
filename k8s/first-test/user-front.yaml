@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: admin-frontend
+  name: user-front
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: admin-frontend
+      app: user-front
   template:
     metadata:
       labels:
-        app: admin-frontend
+        app: user-front
     spec:
       containers:
-        - name: admin-frontend
-          image: <ECR admin-frontend>:latest
+        - name: user-front
+          image: <ECR user-frontend>:latest
           ports:
             - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: admin-frontend-service
+  name: user-front-service
 spec:
   selector:
-    app: admin-frontend
+    app: user-front
   ports:
     - protocol: TCP
       port: 80
