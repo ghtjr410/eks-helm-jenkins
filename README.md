@@ -30,17 +30,41 @@
 14. Service Account 생성확인
 15. eks-charts를 Helm Repository에 추가, 확인, 정보 업데이트
 16. Helm을 이용하여 AWS Load Balancer Controller 설치, 확인
+
 17. AWS Load Balancer를 이용하여 NLB형식의 공식문서 Sample 애플리케이션 배포하기
 18. AWS Load Balancer를 이용하여 ALB형식의 공식문서 Sample 애플리케이션 배포하기
-===============================================
-19. 애플리케이션 경로설정 방법
+19. 애플리케이션 경로설정 방법 찾아보기
     1. 서브도메인으로 경로설정 
-        ㄴ 서브 도메인으로 여러개의 애플리케이션을 분리하는것이 가장 합리적이고 안정적인 방법인 방법일 가능성이 높음
-        ㄴ Nginx나 AWS의 설정에서도 서브도메인 기반 설정이 명확하고 유지보수도 쉽다고 자료조사에도 나오고
-    2. urn으로 경로설정 -> 단일 애플리케이션도 실패
-        ㄴ 2개의 React App을 사용해야하는데 SPA애플리케이션같은 경우는 urn을 이용한 경로분리가 3개의 오류날 구멍이있기때문에 (react설정,nginx설정,yaml설정) 일단 굉장히 안정성이 떨어져보임
-    3. ALB를 4개 생성 -> 돈 4배
-    4. NLB를 4개 생성 -> 돈 4배
+        ㄴ 서브도메인으로 여러 개의 애플리케이션을 분리하는 것이 가장 합리적이고 안정적인 방법일 가능성이 높음
+        ㄴ 서브도메인으로 여러 개의 애플리케이션을 분리하는 것이 가장 합리적이고 안정적인 방법일 가능성이 높음
+    2. URL으로 경로 설정
+        ㄴ 두 개의 React App을 사용하는 경우, URL을 통한 경로 분리는 React 설정, Nginx 설정, yaml 설정 등에서 문제가 발생할 수 있어 안정성이 떨어질 가능성이 높음
+    3. ALB를 4개 생성 -> 비용이 4배 증가
+    4. NLB를 4개 생성 -> 비용이 4배 증가
+20. uri, url, urn, 서브도메인, 메인도메인의 이해와 차이점
+21. DNS 계층구조 이해 ICANN(루트네임서버), Registry(TLD 네임서버), Registrar(대행자), ISP가 제공하는 DNS서버, DNS 캐싱
+22. NLB와 ALB의 구조적 차이점 이해 OSI계층, 외부 노출방식, 경로설정방식, 왜 NLB가 가격이 더 나가는지
+23. Route53으로 도메인을 구입하기
+24. Route53에서 생성한 도메인을 digwebinterface.com에서 해당 도메인은 AWS Route 53에서 관리되고 있으며, Route 53의 네임 서버가 도메인의 DNS 요청을 처리하고 있음을 확인
+25. ingressController 배포시 서비스의 host를 서브도메인을 분리하여 blog.ghtjr.com, admin.ghtjr.com 작성
+26. 서브도메인을 입력하고 Route53에서 레코드를 2개생성
+27. HTTPS 적용 방법 찾기
+28. AWS Certificate Manager(ACM) SSL 인증서 발급
+29. CNAME 레코드 생성 ACM에서 제공해준 이름과 값을 입력
+30. Ingress Controller YAML에 HTTPS와 ACM 적용, HTTP요청 HTTPS로 리디렉션 추가
+31. 2개의 React앱을 서브도메인으로 분리후 HTTPS 접속 성공
+32. 2개의 React앱을 서브도메인으로 분리후 HTTP 접속시 HTTPS 리디렉션 성공 (권장사항)
+===============================================
+
+
+
+
+
+
+
+
+
+
 
 
 
