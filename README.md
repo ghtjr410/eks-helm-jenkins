@@ -54,23 +54,20 @@
 30. Ingress Controller YAML에 HTTPS와 ACM 적용, HTTP요청 HTTPS로 리디렉션 추가
 31. 2개의 React앱을 서브도메인으로 분리후 HTTPS 접속 성공
 32. 2개의 React앱을 서브도메인으로 분리후 HTTP 접속시 HTTPS 리디렉션 성공 (권장사항)
+
+33. Helm을 사용하면 생기는 장점과 Helm의 본질 파악
+34. Helm Chart 생성 후 불필요한 예제 파일 삭제
+35. 기존 YAML파일 templates 디렉토리로 복사
+36. Helm Chart 구성 요소 이해
+37. Helm Chart YAML 파일 작성 문법 파악
+38. 문제 발생: 하나의 Helm Chart로 여러 애플리케이션을 관리하면서 values.yaml의 복잡도 증가 – 해결 방안 모색
+39. Helm Chart 모범 사례: 애플리케이션별 차트 분리 및 공통 차트의 전역 값 사용
+40. Helm Chart를 사용해 단일 애플리케이션을 EKS에 배포
+41. Helm Chart로 여러 애플리케이션을 EKS에 배포한 후 연결 상태 확인
+42. Common의 _helper.tpl로 전역변수 설정
+43. 전역변수 사용을 위해 Helm Chart 의존성 빌드하는 작업 수행
+44. 전역변수 사용할 Chart에 Chart.yaml과 해당하는 변수 경로설정 include "common.namespace" .
+45. Helm Chart로 변경사항 적용해서 application 업데이트하기, 연결 상태 확인
 ===============================================
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-19. user-front, admin-front 경로를 다르게 설정하여 배포하기
-20. user-front, admin-front 요청을 처리하는 springboot app 배포 후 연결
-21. user-front, admin-front, springboot app 의 sso를 담당하는 keycloak 배포 후 연결
-22. springboot app을 모니터링하는 grafana를 배포후 keycloak와 통합 연결
 
