@@ -1,0 +1,15 @@
+namespace:
+  name: test-0923
+
+deployment:
+  name: admin-front-deployment
+  replicas: 1
+  image: 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:latest
+  imagePullPolicy: Always
+  containerPort: 80
+
+service:
+  name: admin-front-service
+  port: 80
+  targetPort: 80
+  type: NodePort

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: {{ .Values.deployment.name }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.deployment.name }}
+    spec:
+      containers:
+      - image: {{ .Values.deployment.image }}
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        name: {{ .Values.deployment.name }}
+        ports:
+        - containerPort: {{ .Values.deployment.containerPort }}
