@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: {{ .Values.namespace }}
+  namespace: {{ include "common.namespace" . }}
   name: {{ .Values.ingress.name }}
   annotations:
     alb.ingress.kubernetes.io/scheme: {{ .Values.ingress.annotations.scheme }}
