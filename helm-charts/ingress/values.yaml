@@ -1,0 +1,26 @@
+namespace: test-0923
+
+ingress:
+  name: ingress-controller
+  ingressClassName: alb
+  annotations:
+    scheme: internet-facing
+    targetType: ip
+    listenPorts:
+      - HTTP: 80
+      - HTTPS: 443
+    certificateArn: "arn:aws:acm:ap-northeast-2:017820660901:certificate/ee99b2df-11ba-49e9-ac88-3a3a1fe05f2f"
+    sslRedirect: '443'
+  rules:
+    - host: admin.ghtjr.com
+      path: /
+      pathType: Prefix
+      service:
+        name: admin-front-service
+        port: 80
+    - host: blog.ghtjr.com
+      path: /
+      pathType: Prefix
+      service:
+        name: user-front-service
+        port: 80
