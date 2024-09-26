@@ -15,23 +15,49 @@ pipeline {
                     credentialsId: "${GIT_CREDENTIALS_ID}"
             }
         }
-                stage('Login to ECR') {
+        stage('Check Tools') {
+            steps {
+                bat '''
+                    aws --version
+                    docker --version
+                '''
+            }
+        }
+        stage('Login to ECR') {
             when {
                 changeset "admin-front/**"
             }
             steps {
                 // AWS 자격 증명을 안전하게 설정
                 withAWS(region: "${AWS_REGION}", credentials: 'aws-credentials') {
-                    // Windows 에이전트인 경우 'bat' 사용, Linux/Unix인 경우 'sh' 사용
-                    // 여기서는 'powershell'을 사용 중이므로 Windows 환경으로 가정
-                    powershell '''
-                        $password = aws ecr get-login-password --region ap-northeast-2
-                        if ($password) {
-                            Write-Host "Successfully retrieved ECR password."
-                            $password | docker login --username AWS --password-stdin 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com
-                        } else {
-                            Write-Error "Failed to retrieve ECR password."
-                        }
+                    bat '''
+                        docker logout 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com || echo "No previous login to ECR."
+                        for /f "tokens=*" %%i in ('aws ecr get-login-password --region ap-northeast-2') do set PASSWORD=%%i
+                        echo %PASSWORD% | docker login --username AWS --password-stdin 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com
+                        if %ERRORLEVEL% EQU 0 (
+                            echo Docker login succeeded.
+                        ) else (
+                            echo Docker login failed.
+                            exit /b 1
+                        )
+                    '''
+                }
+            }
+        }
+        stage('Verify ECR Login') {
+            when {
+                changeset "admin-front/**"
+            }
+            steps {
+                withAWS(region: "${AWS_REGION}", credentials: 'aws-credentials') {
+                    bat '''
+                        aws ecr describe-repositories --region ap-northeast-2
+                        if %ERRORLEVEL% EQU 0 (
+                            echo Successfully listed ECR repositories.
+                        ) else (
+                            echo Failed to list ECR repositories.
+                            exit /b 1
+                        )
                     '''
                 }
             }
