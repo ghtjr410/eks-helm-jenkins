@@ -75,6 +75,18 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image to ECR') {
+            when {
+                changeset "admin-front/**"
+            }
+            steps {
+                script {
+                    docker.image("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:${IMAGE_TAG}").push()
+                }
+            }
+        }
+
+
         // stage('Login to ECR') {
         //     when {
         //         changeset "admin-front/**"
