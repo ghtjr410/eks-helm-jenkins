@@ -5,18 +5,18 @@ pipeline {
         AWS_REGION = credentials('aws-region')  // AWS Region
         ECR_REPO_NAME = 'admin-front'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')  // AWS Access Key ID
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')  // AWS Secret Access Key
-        KUBECONFIG = credentials('kubeconfig')  // Kubernetes config file
+        // AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')  // AWS Access Key ID
+        // AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')  // AWS Secret Access Key
+        // KUBECONFIG = credentials('kubeconfig')  // Kubernetes config file
         GIT_CREDENTIALS_ID = 'github-credentials'
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/ghtjr410/eks-alb-ecr-docker-helm.git',
-                    credentialsId: "${GIT_CREDENTIALS_ID}"
-            }
+        // stage('Checkout') {
+        //     steps {
+        //         git branch: 'main',
+        //             url: 'https://github.com/ghtjr410/eks-alb-ecr-docker-helm.git',
+        //             credentialsId: "${GIT_CREDENTIALS_ID}"
+        //     }
         }
         stage('Build Docker Image') {
             when {
@@ -33,12 +33,15 @@ pipeline {
                 changeset "admin-front/**"  // admin-front 디렉토리 변경이 있는 경우에만 실행
             }
             steps {
-                script {
-                    withEnv([
-                        'AWS_ACCESS_KEY_ID=' + credentials('aws-access-key-id'),
-                        'AWS_SECRET_ACCESS_KEY=' + credentials('aws-secret-access-key')
+                withCredentials([
+                        string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+                        string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
                     ]) {
-                        bat 'aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %AWS_ACCOUNT_ID%.dkr.ecr.%AWS_REGION%.amazonaws.com'
+                        powershell '''
+                            $Env:AWS_ACCESS_KEY_ID = '${AWS_ACCESS_KEY_ID}'
+                            $Env:AWS_SECRET_ACCESS_KEY = '${AWS_SECRET_ACCESS_KEY}'
+                            aws ecr get-login-password --region $Env:AWS_REGION | docker login --username AWS --password-stdin $Env:AWS_ACCOUNT_ID.dkr.ecr.$Env:AWS_REGION.amazonaws.com
+                        '''
                     }
                 }
             }
