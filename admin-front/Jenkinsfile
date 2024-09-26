@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                changeset "admin-front/**"  // admin-front 디렉토리에 변경이 있는 경우에만 실행
+                changeset "admin-front/**"
             }
             steps {
                 script {
@@ -27,26 +27,24 @@ pipeline {
         }
         stage('Login to ECR') {
             when {
-                changeset "admin-front/**"  // admin-front 디렉토리 변경이 있는 경우에만 실행
+                changeset "admin-front/**"
             }
             steps {
-                script {
-                    withCredentials([
-                        string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
-                        string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
-                    ]) {
-                        powershell """
-                            \$Env:AWS_ACCESS_KEY_ID = '${AWS_ACCESS_KEY_ID}'
-                            \$Env:AWS_SECRET_ACCESS_KEY = '${AWS_SECRET_ACCESS_KEY}'
-                            aws ecr get-login-password --region \$Env:AWS_REGION | docker login --username AWS --password-stdin \$Env:AWS_ACCOUNT_ID.dkr.ecr.\$Env:AWS_REGION.amazonaws.com
-                        """
-                    }
+                withCredentials([
+                    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    powershell '''
+                        $Env:AWS_ACCESS_KEY_ID = $Env:AWS_ACCESS_KEY_ID
+                        $Env:AWS_SECRET_ACCESS_KEY = $Env:AWS_SECRET_ACCESS_KEY
+                        aws ecr get-login-password --region $Env:AWS_REGION | docker login --username AWS --password-stdin "$Env:AWS_ACCOUNT_ID.dkr.ecr.$Env:AWS_REGION.amazonaws.com"
+                    '''
                 }
             }
         }
         stage('Push Docker Image to ECR') {
             when {
-                changeset "admin-front/**"  // admin-front 디렉토리 변경이 있는 경우에만 실행
+                changeset "admin-front/**"
             }
             steps {
                 script {
