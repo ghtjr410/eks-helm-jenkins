@@ -37,10 +37,9 @@ pipeline {
                 changeset "admin-front/**"
             }
             steps {
-                // AWS 자격 증명을 안전하게 설정
-                withAWS(region: "${AWS_REGION}", credentials: 'aws-credentials')
-                 {
-                    powershell '''
+                withAWS(region: "${AWS_REGION}", credentials: 'aws-credentials') {
+                    // Docker 로그인을 위해 AWS ECR에 로그인
+                    bat '''
                         aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com
                     '''
                 }
