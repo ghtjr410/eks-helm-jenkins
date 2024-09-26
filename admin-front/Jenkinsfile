@@ -8,11 +8,14 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')  // AWS Access Key ID
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')  // AWS Secret Access Key
         KUBECONFIG = credentials('kubeconfig')  // Kubernetes config file
+        GIT_CREDENTIALS_ID = 'github-credentials'
     }
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/ghtjr410/eks-alb-ecr-docker-helm.git'
+                git branch: 'main',
+                    url: 'https://github.com/ghtjr410/eks-alb-ecr-docker-helm.git',
+                    credentialsId: "${GIT_CREDENTIALS_ID}"
             }
         }
         stage('Build Docker Image') {
