@@ -43,20 +43,7 @@ pipeline {
                     string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     powershell '''
-                        $password = aws ecr get-login-password --region ${env.AWS_REGION}
-                        if ($password) {
-                            Write-Host "Successfully retrieved ECR password."
-                            $password | docker login --username AWS --password-stdin ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com
-                            if ($LASTEXITCODE -eq 0) {
-                                Write-Host "Docker login succeeded."
-                            } else {
-                                Write-Error "Docker login failed."
-                                exit 1
-                            }
-                        } else {
-                            Write-Error "Failed to retrieve ECR password."
-                            exit 1
-                        }
+                        aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com
                     '''
                 }
             }
