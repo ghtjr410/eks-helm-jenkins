@@ -23,6 +23,15 @@ pipeline {
                 '''
             }
         }
+        stage('Print AWS Identity') {
+            steps {
+                withAWS(region: "${AWS_REGION}", credentials: 'aws-credentials') {
+                    bat '''
+                        aws sts get-caller-identity
+                    '''
+                }
+            }
+        }
         stage('Login to ECR') {
             when {
                 changeset "admin-front/**"
