@@ -38,10 +38,8 @@ pipeline {
             }
             steps {
                 // AWS 자격 증명을 안전하게 설정
-                withCredentials([ 
-                    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
-                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
-                ]) {
+                withAWS(region: "${AWS_REGION}", credentials: 'aws-credentials')
+                 {
                     powershell '''
                         aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com
                     '''
