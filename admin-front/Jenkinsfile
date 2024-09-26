@@ -1,13 +1,10 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCOUNT_ID = credentials('aws-account-id')  // AWS Account ID
-        AWS_REGION = credentials('aws-region')  // AWS Region
+        AWS_ACCOUNT_ID = 'your-aws-account-id'  // AWS Account ID를 직접 설정
+        AWS_REGION = 'your-aws-region'  // AWS Region을 직접 설정
         ECR_REPO_NAME = 'admin-front'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        // AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')  // AWS Access Key ID
-        // AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')  // AWS Secret Access Key
-        // KUBECONFIG = credentials('kubeconfig')  // Kubernetes config file
         GIT_CREDENTIALS_ID = 'github-credentials'
     }
     stages {
@@ -33,7 +30,8 @@ pipeline {
                 changeset "admin-front/**"  // admin-front 디렉토리 변경이 있는 경우에만 실행
             }
             steps {
-                withCredentials([
+                script {
+                    withCredentials([
                         string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
                         string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
                     ]) {
