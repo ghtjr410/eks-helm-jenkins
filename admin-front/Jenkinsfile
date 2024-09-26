@@ -11,13 +11,13 @@ pipeline {
         GIT_CREDENTIALS_ID = 'github-credentials'
     }
     stages {
-        // stage('Checkout') {
-        //     steps {
-        //         git branch: 'main',
-        //             url: 'https://github.com/ghtjr410/eks-alb-ecr-docker-helm.git',
-        //             credentialsId: "${GIT_CREDENTIALS_ID}"
-        //     }
-        // }
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/ghtjr410/eks-alb-ecr-docker-helm.git',
+                    credentialsId: "${GIT_CREDENTIALS_ID}"
+            }
+        }
         stage('Build Docker Image') {
             when {
                 changeset "admin-front/**"  // admin-front 디렉토리에 변경이 있는 경우에만 실행
