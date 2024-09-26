@@ -30,16 +30,21 @@ pipeline {
             steps {
                 // AWS 자격 증명을 안전하게 설정
                 withAWS(region: "${AWS_REGION}", credentials: 'aws-credentials') {
-                    bat '''
-                        docker logout 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com || echo "No previous login to ECR."
-                        for /f "tokens=*" %%i in ('aws ecr get-login-password --region ap-northeast-2') do set PASSWORD=%%i
-                        echo %PASSWORD% | docker login --username AWS --password-stdin 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com
-                        if %ERRORLEVEL% EQU 0 (
-                            echo Docker login succeeded.
-                        ) else (
-                            echo Docker login failed.
-                            exit /b 1
-                        )
+                    powershell '''
+                        $password = aws ecr get-login-password --region ap-northeast-2
+                        if ($password) {
+                            Write-Host "Successfully retrieved ECR password."
+                            $password | docker login --username AWS --password-stdin 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com
+                            if ($LASTEXITCODE -eq 0) {
+                                Write-Host "Docker login succeeded."
+                            } else {
+                                Write-Error "Docker login failed."
+                                exit 1
+                            }
+                        } else {
+                            Write-Error "Failed to retrieve ECR password."
+                            exit 1
+                        }
                     '''
                 }
             }
