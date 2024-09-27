@@ -1,11 +1,11 @@
-namespace:
-  name: test-0923
+image:
+  repository: 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/user-front
+  tag: latest
+  imagePullPolicy: Always
 
 deployment:
   name: admin-front-deployment
   replicas: 1
-  image: 017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:latest
-  imagePullPolicy: Always
   containerPort: 80
 
 service:

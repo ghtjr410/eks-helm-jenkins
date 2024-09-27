@@ -69,7 +69,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.build("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:latest", 'admin-front/.')
+                    docker.build("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:${IMAGE_TAG}", 'admin-front/.')
                 }
             }
         }
@@ -79,7 +79,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.image("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:latest").push()
+                    docker.image("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:${IMAGE_TAG}").push()
                 }
             }
         }
@@ -95,10 +95,10 @@ pipeline {
                             echo AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}
                             echo AWS_REGION: ${AWS_REGION}
                             echo ECR_REPO_NAME: ${ECR_REPO_NAME}
-                            echo IMAGE_TAG: latest                            
+                            echo IMAGE_TAG: ${IMAGE_TAG}                            
                             helm upgrade --install admin-front ./admin-front ^
                                 --set image.repository=017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front ^
-                                --set image.tag=latest
+                                --set image.tag=${IMAGE_TAG}
                         """
                     }
                 }
