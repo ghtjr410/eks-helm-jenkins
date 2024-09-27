@@ -69,7 +69,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.build("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:${IMAGE_TAG}", 'admin-front/.')
+                    docker.build("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:latest", 'admin-front/.')
                 }
             }
         }
@@ -79,7 +79,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.image("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:${IMAGE_TAG}").push()
+                    docker.image("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:latest").push()
                 }
             }
         }
@@ -91,9 +91,14 @@ pipeline {
                 dir('helm-charts') {  // 작업 디렉토리를 helm-charts로 변경
                     script {
                         bat """
-                            helm upgrade --install admin-front ./admin-front \\
-                                --set image.repository=017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front \\
-                                --set image.tag=${IMAGE_TAG}
+                            echo Current Directory: %CD%
+                            echo AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}
+                            echo AWS_REGION: ${AWS_REGION}
+                            echo ECR_REPO_NAME: ${ECR_REPO_NAME}
+                            echo IMAGE_TAG: latest                            
+                            helm upgrade --install admin-front ./admin-front ^
+                                --set image.repository=017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front ^
+                                --set image.tag=latest
                         """
                     }
                 }
