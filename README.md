@@ -36,7 +36,6 @@
 19. 애플리케이션 경로설정 방법 찾아보기
     1. 서브도메인으로 경로설정 
         ㄴ 서브도메인으로 여러 개의 애플리케이션을 분리하는 것이 가장 합리적이고 안정적인 방법일 가능성이 높음
-        ㄴ 서브도메인으로 여러 개의 애플리케이션을 분리하는 것이 가장 합리적이고 안정적인 방법일 가능성이 높음
     2. URL으로 경로 설정
         ㄴ 두 개의 React App을 사용하는 경우, URL을 통한 경로 분리는 React 설정, Nginx 설정, yaml 설정 등에서 문제가 발생할 수 있어 안정성이 떨어질 가능성이 높음
     3. ALB를 4개 생성 -> 비용이 4배 증가
@@ -48,7 +47,7 @@
 24. Route53에서 생성한 도메인을 digwebinterface.com에서 해당 도메인은 AWS Route 53에서 관리되고 있으며, Route 53의 네임 서버가 도메인의 DNS 요청을 처리하고 있음을 확인
 25. ingressController 배포시 서비스의 host를 서브도메인을 분리하여 blog.ghtjr.com, admin.ghtjr.com 작성
 26. 서브도메인을 입력하고 Route53에서 레코드를 2개생성
-27. HTTPS 적용 방법 찾기
+27. HTTPS 적용 방법 찾기 - AWS Certificate Manager(ACM) 선택
 28. AWS Certificate Manager(ACM) SSL 인증서 발급
 29. CNAME 레코드 생성 ACM에서 제공해준 이름과 값을 입력
 30. Ingress Controller YAML에 HTTPS와 ACM 적용, HTTP요청 HTTPS로 리디렉션 추가
@@ -62,12 +61,59 @@
 37. Helm Chart YAML 파일 작성 문법 파악
 38. 문제 발생: 하나의 Helm Chart로 여러 애플리케이션을 관리하면서 values.yaml의 복잡도 증가 – 해결 방안 모색
 39. Helm Chart 모범 사례: 애플리케이션별 차트 분리 및 공통 차트의 전역 값 사용
-40. Helm Chart를 사용해 단일 애플리케이션을 EKS에 배포
-41. Helm Chart로 여러 애플리케이션을 EKS에 배포한 후 연결 상태 확인
+40. Helm Chart를 사용해 단일 애플리케이션을 EKS에 배포 - 성공
+41. Helm Chart로 여러 애플리케이션을 EKS에 배포한 후 연결 상태 확인 - 성공
 42. Common의 _helper.tpl로 전역변수 설정
 43. 전역변수 사용을 위해 Helm Chart 의존성 빌드하는 작업 수행
 44. 전역변수 사용할 Chart에 Chart.yaml과 해당하는 변수 경로설정 include "common.namespace" .
-45. Helm Chart로 변경사항 적용해서 application 업데이트하기, 연결 상태 확인
-===============================================
+45. Helm Chart로 변경사항 적용해서 application 업데이트하기, 연결 상태 확인 - 성공
+
+46. (EKS + Helm)에 Jenkins를 이용한 CI/CD 방법 모색
+47. Jenkins의 물리적위치 정하기 - 1번선택
+    1. 로컬 컴퓨터 - jenkins에서 사용할 모든것들이 이미 준비되어있음 kubectl, aws-cli, helm 등
+    2. 로컬 컴퓨터 - Docker - 자격증명다시해야댐
+    3. EC2 - 리소스,비용문제,자격증명다시해야댐
+    4. EKS - 리소스,비용문제,자격증명다시해야댐
+48. Jenkins windows 설치
+49. 로컬 Jenkins 접속, 연결확인
+50. 분산빌드 설정
+51. plugin 설치 (GitHub Integration Plugin, Docker Pipeline, Amazon ECR plugin, Kubernetes CLI Plugin, Pipeline, Pipeline: AWS Steps)
+52. GitHub Repository Webhook 설정을 위해 Ngrok 설치
+53. Ngrok Version으로 설치확인 후 localhost:8080에 연결 - 외부접근 주소 생성
+54. GitHub Repository Webhook에서 Ngrok 생성 주소 기입 후 ping payload Jenkins에 신호 송신 - Jenkins - Jenkins management - System Log에서 확인
+55. MSA 환경 Jenkins Pipeline 방법론 검색 및 각 방법의 이해 - 3번 선택
+    1. Jenkins UI 폴더별 설정 사용 - (가장 큰 단위 - 회사 전체 차원)
+    2. 멀티 브랜치 파이프라인 - (중간 단위 - 부서 혹은 프로젝트 차원)
+    3. When 조건을 이용한 디렉토리별 변경감지 - (세부 단위 - 팀 차원)
+56. Jenkins Tools에서 Git 경로 설정
+57. GitHub Token 생성 - Jenkins 전용 (repo, hooks, workflow 관련 권한)
+58. Docker Proxy 예외 설정 .docker\config.json 수정
+59. Jenkins - Credential Provider, Credential 으로 환경변수 설정
+60. Jenkins - Create a job or 새로운 Item 
+61. Jenkins Job Configuration General - GitHub hook trigger for GITScm Polling 설정
+62. Jenkins Job Configuration Advanced Project Options - 브랜치 */main 설정, Script Path 특정디렉토리/Jenkinsfile 설정
+61. Jenkinsfile 작성
+62. When구절로 해당 디렉토리 변경 감지 설정
+63. Jenkins - Git Branch CheckOut 성공
+64. Jenkins - ECR 로그인 성공
+65. Jenkins - 해당 디렉토리 Docker image 빌드 성공
+66. Jenkins - 빌드한 Docker image ECR Push 성공
+=================================================
+
+
+67. Jenkins - ECR에 Push 된이미지로 EKS에 배포하여 변경사항이 적용됐는지 확인
+68. Jenkins - Helm을 이용해 EKS에 배포자동화하기
+
+
+
+
+
+59. admin-front 문구만변경해서 CI/CD 적용됐는지 확인
+
+
+
+
+
+
 
 
