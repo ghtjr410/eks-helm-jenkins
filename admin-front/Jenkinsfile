@@ -83,15 +83,21 @@ pipeline {
                 }
             }
         }
-        // stage('Deploy to EKS') {
-        //     when {
-        //         changeset "admin-front/**"  // admin-front 디렉토리 변경이 있는 경우에만 실행
-        //     }
-        //     steps {
-        //         script {
-        //             bat 'helm upgrade --install admin-front./admin-front --set image.repository=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME},image.tag=${IMAGE_TAG}'
-        //         }
-        //     }
-        // }
+        stage('Deploy to EKS') {
+            when {
+                changeset "admin-front/**"  // admin-front 디렉토리 변경이 있는 경우에만 실행
+            }
+            steps {
+                dir('helm-charts') {  // 작업 디렉토리를 helm-charts로 변경
+                    script {
+                        bat """
+                            helm upgrade --install admin-front ./admin-front \\
+                                --set image.repository=017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front \\
+                                --set image.tag=${IMAGE_TAG}
+                        """
+                    }
+                }
+            }
+        }
     }
 }
