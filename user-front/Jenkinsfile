@@ -3,7 +3,7 @@ pipeline {
     environment {
         AWS_ACCOUNT_ID = '017820660901'  // AWS Account ID를 직접 설정
         AWS_REGION = 'ap-northeast-2'  // AWS Region을 직접 설정
-        ECR_REPO_NAME = 'admin-front'
+        ECR_REPO_NAME = 'user-front'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         GIT_CREDENTIALS_ID = 'github-credentials'
     }
@@ -35,7 +35,7 @@ pipeline {
         
         stage('Login to ECR') {
             when {
-                changeset "admin-front/**"
+                changeset "user-front/**"
             }
             steps {
                 withAWS(region: "${AWS_REGION}", credentials: 'aws-credentials') {
@@ -47,7 +47,7 @@ pipeline {
         }
         stage('Verify ECR Login') {
             when {
-                changeset "admin-front/**"
+                changeset "user-front/**"
             }
             steps {
                 withAWS(region: "${AWS_REGION}", credentials: 'aws-credentials') {
@@ -65,27 +65,27 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                changeset "admin-front/**"
+                changeset "user-front/**"
             }
             steps {
                 script {
-                    docker.build("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:latest", 'admin-front/.')
+                    docker.build("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/user-front:latest", 'user-front/.')
                 }
             }
         }
         stage('Push Docker Image to ECR') {
             when {
-                changeset "admin-front/**"
+                changeset "user-front/**"
             }
             steps {
                 script {
-                    docker.image("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front:latest").push()
+                    docker.image("017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/user-front:latest").push()
                 }
             }
         }
         stage('Deploy to EKS') {
             when {
-                changeset "admin-front/**"
+                changeset "user-front/**"
             }
             steps {
                 dir('helm-charts') {
@@ -96,8 +96,8 @@ pipeline {
                             echo AWS_REGION: ${AWS_REGION}
                             echo ECR_REPO_NAME: ${ECR_REPO_NAME}
                             echo IMAGE_TAG: latest                            
-                            helm upgrade --install admin-front ./admin-front ^
-                                --set image.repository=017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/admin-front ^
+                            helm upgrade --install user-front ./user-front ^
+                                --set image.repository=017820660901.dkr.ecr.ap-northeast-2.amazonaws.com/user-front ^
                                 --set image.tag=latest
                         """
                     }
