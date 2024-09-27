@@ -98,17 +98,32 @@
 64. Jenkins - ECR 로그인 성공
 65. Jenkins - 해당 디렉토리 Docker image 빌드 성공
 66. Jenkins - 빌드한 Docker image ECR Push 성공
-=================================================
+67. Jenkins - ECR에 Push 된이미지로 EKS에 배포하여 변경사항 확인 - 성공
+68. Jenkins - Pipeline에서 cli의 위치를 파악해야 helm-charts 하위에있는 admin-front를 배포할 수 있음 구조파악 및 방법모색
+69. Jenkins - Pipeline에서는 명령어가 루트 디렉토리에서 실행된다.
+70. Jenkins - Jenkinsfile에서 dir구절로 명령어 실행 디렉토리 명시 dir('helm-charts')
+71. Jenkins - Helm을 이용해 EKS에 배포자동화하기
+72. admin-front 문구만변경해서 CI/CD 적용됐는지 확인완료
+73. helm에서는 image tag를 latest, Jenkins Pipeline에서는 build number를 imagetag로 사용 
+    1. values.yaml 파일에 image 항목에 repository, tag 변수를 덮어씌우는방식
+74. user-front 자동배포
+75. ECR Lifecycle Policy 설정 - Release tag는 Lifecycle Policy로 삭제되지않게 보호 설정
+76. ECR Lifecycle Policy 설정 - 최신이미지 3개만 유지하고 나머지 삭제
+
+======================================================================================================================================================
+통합 끝
+
+AWS IAM, ACM, ECR, EKS, Rout53, ELB, ALB, NLB, Kubernetes, Docker, Helm, Jenkins, ngrok, GitHub webhook, React 
 
 
-67. Jenkins - ECR에 Push 된이미지로 EKS에 배포하여 변경사항이 적용됐는지 확인
-68. Jenkins - Helm을 이용해 EKS에 배포자동화하기
 
 
 
 
 
-59. admin-front 문구만변경해서 CI/CD 적용됐는지 확인
+
+
+
 
 
 
