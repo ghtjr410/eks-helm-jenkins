@@ -14,8 +14,8 @@ spec:
         app.kubernetes.io/name: {{ .Values.deployment.name }}
     spec:
       containers:
-      - image: {{ .Values.deployment.image }}
-        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+      - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
         name: {{ .Values.deployment.name }}
         ports:
         - containerPort: {{ .Values.deployment.containerPort }}
