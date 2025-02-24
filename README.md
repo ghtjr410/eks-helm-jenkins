@@ -1,5 +1,3 @@
-# EKS-ALB-ECR-DOCKER-HELM
-
 ## 프로젝트 목적
 1. 2개의 간단한 React Application를 Nginx와 함께 Docker Image로 각각 빌드
 2. 2개의 Docker 이미지를 Elastic Container Registry(ECR)에 푸시
@@ -110,10 +108,6 @@
 75. ECR Lifecycle Policy 설정 - Release tag는 Lifecycle Policy로 삭제되지않게 보호 설정
 76. ECR Lifecycle Policy 설정 - 최신이미지 3개만 유지하고 나머지 삭제
 
-======================================================================================================================================================
-통합 끝
-
-AWS IAM, ACM, ECR, EKS, Rout53, ELB, ALB, NLB, Kubernetes, Docker, Helm, Jenkins, ngrok, GitHub webhook, React 
 
 
 
